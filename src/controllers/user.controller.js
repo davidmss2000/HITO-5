@@ -1,3 +1,4 @@
+// const bcrypt = require('bcrypt');
 const User = require('../models/user.model.js');
 
 function create(req, res) {
@@ -52,9 +53,39 @@ function deleteById(req, res) {
   );
 }
 
+/*
+WIP
+
+function login(req, res) {
+  const { password } = req.body;
+  const { email } = req.body;
+  User.findOne({ email }).then((response) => {
+    if (response == null) {
+      res.status(404).send({ message: 'this user doen\'t exist' });
+    }
+
+    // email exists, check pass and return user
+    if (bcrypt.compareSync(password, response.password)) {
+      res.status(200).send({ response });
+    } else {
+      res.status(500).send({ message: 'Wrong password' });
+    }
+  }).catch((err) => {
+    res.status(500).send({ err });
+  });
+}
+*/
+
+function getSensibleInformation(req, res) {
+  // Protected route, only if a good token is provided token
+  res.status(500).send({ req, res });
+}
+
 module.exports = {
   create,
   getInfoById,
   updateById,
   deleteById,
+  // WIP login,
+  getSensibleInformation,
 };

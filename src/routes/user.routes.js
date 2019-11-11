@@ -4,7 +4,10 @@ const user = require('../controllers/user.controller');
 const router = express.Router();
 
 // Create a new user if the email doesn't already exist
-router.post('/', user.create);
+router.post('/register', user.create);
+
+// Login
+router.post('/login', user.login);
 
 // Retrieve user with userId
 router.get('/:userId', user.getInfoById);
@@ -14,5 +17,8 @@ router.put('/:userId', user.updateById);
 
 // Delete an existing user with userId
 router.delete('/:userId', user.deleteById);
+
+// Protected route
+router.get('/me', user.getSensibleInformation);
 
 module.exports = router;
