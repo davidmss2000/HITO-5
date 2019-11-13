@@ -10,7 +10,7 @@ router.post('/register', user.create);
 router.post('/login', user.login);
 
 // Retrieve user with userId
-router.get('/:userId', user.getInfoById);
+router.get('/info/:userId', user.getInfoById);
 
 // Update an existing user with userId
 router.put('/:userId', user.updateById);
@@ -19,6 +19,6 @@ router.put('/:userId', user.updateById);
 router.delete('/:userId', user.deleteById);
 
 // Protected route
-router.get('/me', user.getSensibleInformation);
+router.get('/private', user.getSensibleInformation);
 
 module.exports = router;

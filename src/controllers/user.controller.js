@@ -1,5 +1,6 @@
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const User = require('../models/user.model.js');
+const auth = require('../middleware/auth.js');
 
 function create(req, res) {
   // Create the User
@@ -53,32 +54,36 @@ function deleteById(req, res) {
   );
 }
 
-/*
-WIP
-
 function login(req, res) {
   const { password } = req.body;
   const { email } = req.body;
+
   User.findOne({ email }).then((response) => {
     if (response == null) {
-      res.status(404).send({ message: 'this user doen\'t exist' });
+      res.status(404).send({ message: 'this email doen\'t exist' });
     }
 
     // email exists, check pass and return user
     if (bcrypt.compareSync(password, response.password)) {
-      res.status(200).send({ response });
+      res.status(200).send(auth.createToken(response));
     } else {
-      res.status(500).send({ message: 'Wrong password' });
+      res.status(500).send({ message: 'wrong password' });
     }
   }).catch((err) => {
     res.status(500).send({ err });
   });
 }
-*/
 
 function getSensibleInformation(req, res) {
-  // Protected route, only if a good token is provided token
-  res.status(500).send({ req, res });
+  // Protected route, only if a good token is provided
+  const token = req.headers.authorization;
+  if (token === undefined) {
+    res.status(500).send({ err: 'not authorized' });
+  } else {
+    const verify = auth.verifyToken(token);
+    if (verify.err !== undefined) res.status(500).send(verify);
+    else console.log('bieeeen', token);
+  }
 }
 
 module.exports = {
@@ -86,6 +91,6 @@ module.exports = {
   getInfoById,
   updateById,
   deleteById,
-  // WIP login,
+  login,
   getSensibleInformation,
 };
