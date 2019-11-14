@@ -1,17 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
+mongoose.set('useCreateIndex', true);
 
 const UserSchema = mongoose.Schema({
   name: String,
   surname: String,
   email: {
     type: String,
-    required: [true, 'required'],
-    unique: [true, 'already exists'],
+    required: true,
+    unique: true,
   },
   password: {
     type: String,
-    required: [true, 'required'],
+    required: true,
   },
   phoneNumber: {
     type: String,
@@ -26,9 +29,13 @@ const UserSchema = mongoose.Schema({
 
 
 UserSchema.pre('save', function callback(next) {
-  if (this.password.isModified()) {
-    this.password = bcrypt.hashSync(this.password, 10);
-  }
+  this.password = bcrypt.hashSync(this.password, 10);
+  return next();
+});
+
+UserSchema.pre('updateOne', function callback(next) {
+  const newPass = this._update.password;
+  if (newPass !== undefined) this._update.password = bcrypt.hashSync(newPass, 10);
   return next();
 });
 

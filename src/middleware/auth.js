@@ -1,23 +1,27 @@
+/* eslint-disable no-underscore-dangle */
 const jwt = require('jsonwebtoken');
 
 const secret = 'dummySecretPUBLIC@GITHUB';
 
 const tokenExpiration = (60000 * 60); // 1 hour (in milliseconds)
 
-function createToken(foundUser) {
+function createToken(user) {
   return jwt.sign({
-    // eslint-disable-next-line no-underscore-dangle
-    auth: foundUser._id,
+    auth: user._id,
     exp: Date.now() + tokenExpiration,
   }, secret);
 }
 
 function verifyToken(token) {
+  let decoded;
   try {
-    return jwt.verify(token, secret);
+    decoded = jwt.verify(token, secret);
   } catch (err) {
-    return { err: 'not authorized' };
+    return { err: err.message };
   }
+  if (decoded.exp === undefined) return { err: 'unauthorized' };
+  if (decoded.exp < Date.now()) return { err: 'token expired' };
+  return { decoded };
 }
 
 module.exports = {
