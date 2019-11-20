@@ -1,7 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const book = require('../controllers/book.controller');
 
 const router = express.Router();
+
+router.use(cors({ origin: '*' }));
 
 // Create book
 router.post('/', book.create);
