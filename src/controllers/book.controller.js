@@ -92,6 +92,10 @@ function getByField(req, res) {
   });
 }
 
+function getAll(req, res) {
+  Book.find().then((books) => res.status(200).send(books));
+}
+
 module.exports = {
   get,
   create,
@@ -99,4 +103,5 @@ module.exports = {
   editByIsbn,
   deleteByIsbn,
   getByField,
+  getAll,
 };

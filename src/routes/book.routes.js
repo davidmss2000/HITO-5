@@ -9,6 +9,9 @@ router.post('/', book.create);
 // Retrieve books matching query params
 router.get('/', book.get);
 
+// Retrieve all books
+router.get('/all', book.getAll);
+
 // Retrieve books by title
 router.get('/title/:title', book.getByField);
 
