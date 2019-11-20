@@ -21,6 +21,6 @@ app.use(bodyParser.json());
 app.use('/user', user);
 
 // Set xxxx/book as base url for user
-app.use('/book', user);
+app.use('/book', book);
 
 module.exports = app;
