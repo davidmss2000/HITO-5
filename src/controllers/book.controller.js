@@ -96,6 +96,22 @@ function getAll(req, res) {
   Book.find().then((books) => res.status(200).send(books));
 }
 
+function getBySubstring(req, res) {
+  const field = req.params.field;
+  const substring = req.body.substring;
+
+  if (!field || !substring) return res.status(400).send({ message: 'Missing params' });
+
+  query = {};
+  query[field] = new RegExp(substring, 'i'); // 'i' means case insensitive
+
+  Book.find(query, function callback(err, books) {
+    if (err) return res.status(500).send({err});
+    return res.status(200).send({books});
+  });
+
+}
+
 module.exports = {
   get,
   create,
@@ -104,4 +120,5 @@ module.exports = {
   deleteByIsbn,
   getByField,
   getAll,
+  getBySubstring,
 };

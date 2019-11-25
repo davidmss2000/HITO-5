@@ -12,6 +12,9 @@ router.post('/', book.create);
 // Retrieve books matching query params
 router.get('/', book.get);
 
+// Retrieve all books that contains the substring (full match not necessary)
+router.get('/search/:field', book.getBySubstring);
+
 // Retrieve all books
 router.get('/all', book.getAll);
 
