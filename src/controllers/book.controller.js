@@ -97,17 +97,17 @@ function getAll(req, res) {
 }
 
 function getBySubstring(req, res) {
-  const field = req.params.field;
-  const substring = req.body.substring;
+  const { field } = req.params;
+  const { substring } = req.params;
 
   if (!field || !substring) return res.status(400).send({ message: 'Missing params' });
 
-  query = {};
+  const query = {};
   query[field] = new RegExp(substring, 'i'); // 'i' means case insensitive
 
-  Book.find(query, function callback(err, books) {
-    if (err) return res.status(500).send({err});
-    return res.status(200).send({books});
+  Book.find(query, (err, books) => {
+    if (err) return res.status(500).send({ err });
+    return res.status(200).send({ books });
   });
 
 }

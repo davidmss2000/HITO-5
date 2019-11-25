@@ -13,7 +13,7 @@ router.post('/', book.create);
 router.get('/', book.get);
 
 // Retrieve all books that contains the substring (full match not necessary)
-router.get('/search/:field', book.getBySubstring);
+router.get('/search/:field/:substring', book.getBySubstring);
 
 // Retrieve all books
 router.get('/all', book.getAll);
